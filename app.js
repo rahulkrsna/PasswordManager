@@ -1,4 +1,4 @@
-console.log('\tstarting password manager\n');
+console.log('\t Password Manager\n');
 
 // require : built in nodejs function, used to access the module we need
 var crypto = require("crypto-js");
@@ -216,24 +216,33 @@ var argv = require("yargs")
 		
 	if(command === "create") {
 		if(argv.name.length > 0 && argv.username.length > 0) {
-			createAccount({
-				name: argv.name,
-				username: argv.username,
-				password: argv.password
-			}, argv.masterPWD)
-			console.log("Account Created");
+			try {
+				createAccount({
+					name: argv.name,
+					username: argv.username,
+					password: argv.password
+				}, argv.masterPWD)
+				console.log("Account Created");
+			} catch (e) {
+				console.log("Error in Account Creation: " + e.message);
+			}
 		} else {
 			console.log("Account Details are incomplete.")
 		}
 	} else if (command === "get") {
 		if(argv.name.length > 0) {
-			matchedAccounts = getAccount(argv.name,  argv.masterPWD);
+			try {
+				matchedAccounts = getAccount(argv.name,  argv.masterPWD);
 			
-			if (matchedAccounts.length > 0) {
-				console.log(matchedAccounts);
-			} else {
-				console.log("No matching accounts found!!!");
+				if (matchedAccounts.length > 0) {
+					console.log(matchedAccounts);
+				} else {
+					console.log("No matching accounts found!!!");
+				}
+			} catch (e) {
+				console.log("Error in Get Account: " + e.message )
 			}
+			
 			
 		}
 	}
